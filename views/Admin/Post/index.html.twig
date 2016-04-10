@@ -1,0 +1,23 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}PostAdmin{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Posts</h1>
+                <ul class="list-unstyled">
+                    {% for post in posts %}
+                        <li><a href="">{{ post.title }}</a> - <a href="">EDIT</a><a href="">EDIT</a></li>
+                    {% endfor %}
+                </ul>
+
+                <br>
+                <a class="btn btn-success" href="{{ path('admin.post.new') }}">
+                    New Post
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

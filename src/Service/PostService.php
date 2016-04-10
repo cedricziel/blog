@@ -23,6 +23,14 @@ class PostService
     /**
      * @return Post[]
      */
+    public function findAll()
+    {
+        return $this->postStore->fetchAll('SELECT * FROM Post');
+    }
+
+    /**
+     * @return Post[]
+     */
     public function findLatestPublishedPosts()
     {
         return $this->postStore->fetchAll('SELECT * FROM Post WHERE draft = 0 ORDER BY published_at DESC');

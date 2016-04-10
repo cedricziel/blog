@@ -6,6 +6,7 @@ use Braincrafted\Bundle\BootstrapBundle\Twig\BootstrapBadgeExtension;
 use Braincrafted\Bundle\BootstrapBundle\Twig\BootstrapFormExtension;
 use Braincrafted\Bundle\BootstrapBundle\Twig\BootstrapIconExtension;
 use Braincrafted\Bundle\BootstrapBundle\Twig\BootstrapLabelExtension;
+use CedricZiel\Blog\Controller\Admin\PostController as AdminPostController;
 use CedricZiel\Blog\Controller\AdminController;
 use CedricZiel\Blog\Controller\HomepageController;
 use CedricZiel\Blog\Service\PostService;
@@ -133,6 +134,16 @@ class BlogApplicationServiceProvider implements ServiceProviderInterface
             function () use ($app) {
                 $controller = new AdminController($app['twig'], $app['post.service']);
                 $controller->setApplication($app);
+                $controller->setTwig($app['twig']);
+
+                return $controller;
+            }
+        );
+        $app['admin.post.controller'] = $app->share(
+            function () use ($app) {
+                $controller = new AdminPostController($app['post.service']);
+                $controller->setApplication($app);
+                $controller->setTwig($app['twig']);
 
                 return $controller;
             }
@@ -153,6 +164,10 @@ class BlogApplicationServiceProvider implements ServiceProviderInterface
     {
         $app->post('/admin', 'admin.controller:indexAction')->bind('admin.index');
         $app->get('/admin', 'admin.controller:indexAction')->bind('admin.index');
+        $app->post('/admin/post', 'admin.post.controller:indexAction')->bind('admin.post.index');
+        $app->get('/admin/post', 'admin.post.controller:indexAction')->bind('admin.post.index');
+        $app->post('/admin/post/new', 'admin.post.controller:newAction')->bind('admin.post.new');
+        $app->get('/admin/post/new', 'admin.post.controller:newAction')->bind('admin.post.new');
         $app->get('/', 'homepage.controller:indexAction')->bind('homepage');
     }
 
