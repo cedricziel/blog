@@ -1,0 +1,13 @@
+runtime: php55
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /admin
+  script: web/index.php
+  login: admin
+- url: /admin/.*
+  script: web/index.php
+  login: admin
+- url: /.*
+  script: web/index.php

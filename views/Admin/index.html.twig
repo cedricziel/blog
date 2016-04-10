@@ -1,0 +1,25 @@
+{% form_theme postForm 'bootstrap.html.twig' %}
+
+{% extends 'layout.html.twig' %}
+
+{% block title %}Admin{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Admin</h1>
+                {{ form_start(postForm, {'attr': {'class': 'form-horizontal'}}) }}
+                {{ form_widget(postForm) }}
+                {{ form_end(postForm) }}
+
+                <h2>Posts</h2>
+                <ul class="list-unstyled">
+                    {% for post in posts %}
+                        <li><a href="">{{ post.title }}</a> - <a href="">EDIT</a><a href="">EDIT</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

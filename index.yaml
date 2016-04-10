@@ -1,0 +1,14 @@
+indexes:
+
+- kind: Post
+  ancestor: no
+  properties:
+  - name: published_at
+    direction: desc
+
+- kind: Post
+  ancestor: no
+  properties:
+  - name: published_at
+    direction: desc
+  - name: draft
