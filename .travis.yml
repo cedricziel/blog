@@ -1,0 +1,18 @@
+language: php
+php:
+- '5.5'
+cache:
+  directories:
+  - ".composer/cache"
+deploy:
+  provider: gae
+  keyfile: client-secret.json
+  project: original-crow-127716
+  skip_cleanup: true
+install:
+- composer install
+script: "/bin/true"
+sudo: false
+before_install:
+- openssl aes-256-cbc -K $encrypted_20cd1dca1732_key -iv $encrypted_20cd1dca1732_iv
+  -in client-secret.json.enc -out client-secret.json -d
