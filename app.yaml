@@ -11,3 +11,11 @@ handlers:
   login: admin
 - url: /.*
   script: web/index.php
+
+skip_files:
+- ^(.*/)?#.*#$
+- ^(.*/)?.*~$
+- ^(.*/)?.*\.py[co]$
+- ^(.*/)?.*/RCS/.*$
+- ^(.*/)?\..*$
+- ^vendor/symfony/finder/Tests/*$
