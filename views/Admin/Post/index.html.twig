@@ -9,7 +9,10 @@
                 <h1>Posts</h1>
                 <ul class="list-unstyled">
                     {% for post in posts %}
-                        <li><a href="">{{ post.title }}</a> - <a href="">EDIT</a><a href="">EDIT</a></li>
+                        <li>
+                            <a href="{{ path('admin.post.edit', {'postId': post.keyId}) }}">
+                                {{ post.title }}
+                            </a> - <a href="">EDIT</a><a href="">EDIT</a></li>
                     {% endfor %}
                 </ul>
 

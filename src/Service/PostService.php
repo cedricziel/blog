@@ -52,4 +52,14 @@ class PostService
     {
         $this->postStore->upsert($post);
     }
+
+    /**
+     * @param string $postId
+     *
+     * @return Post
+     */
+    public function findOneById($postId)
+    {
+        return $this->postStore->fetchById($postId);
+    }
 }

@@ -7,12 +7,14 @@ use CedricZiel\Blog\Entity\Post;
 use CedricZiel\Blog\Service\PostService;
 use CedricZiel\Blog\Traits\ApplicationAwareTrait;
 use CedricZiel\Blog\Traits\TwigAwareTrait;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -89,17 +91,18 @@ class PostController implements ApplicationAwareInterface
         );
     }
 
-
     /**
      * @param Post $post
+     *
      * @return Form
      */
     protected function createPostForm($post)
     {
         /** @var FormFactory $formFactory */
         $formFactory = $this->application['form.factory'];
-        /** @var Form $postForm */
-        $postForm = $formFactory
+
+        /** @var FormBuilder $formBuilder */
+        $formBuilder = $formFactory
             ->createBuilder(FormType::class, $post)
             ->add('title')
             ->add('draft', CheckboxType::class)
@@ -107,10 +110,73 @@ class PostController implements ApplicationAwareInterface
             ->add('updated_at', DateTimeType::class)
             ->add('published_at', DateTimeType::class)
             ->add('body', TextareaType::class)
-            ->add('submit', SubmitType::class)
-            ->setAction($this->application->path('admin.index'))
-            ->getForm();
+            ->add('submit', SubmitType::class);
+
+        $formBuilder->get('created_at')->addModelTransformer(
+            new CallbackTransformer(
+                function ($originalCreatedAt) {
+
+                    return \DateTime::createFromFormat('Y-m-d H:i:s', $originalCreatedAt);
+                },
+                function ($submittedCreatedAt) {
+                    return $submittedCreatedAt;
+                }
+            )
+        );
+        $formBuilder->get('updated_at')->addModelTransformer(
+            new CallbackTransformer(
+                function ($originalCreatedAt) {
+
+                    return \DateTime::createFromFormat('Y-m-d H:i:s', $originalCreatedAt);
+                },
+                function ($submittedCreatedAt) {
+                    return $submittedCreatedAt;
+                }
+            )
+        );
+        $formBuilder->get('published_at')->addModelTransformer(
+            new CallbackTransformer(
+                function ($originalCreatedAt) {
+
+                    return \DateTime::createFromFormat('Y-m-d H:i:s', $originalCreatedAt);
+                },
+                function ($submittedCreatedAt) {
+                    return $submittedCreatedAt;
+                }
+            )
+        );
+
+        /** @var Form $postForm */
+        $postForm = $formBuilder->getForm();
 
         return $postForm;
+    }
+
+    /**
+     * @param Request $request
+     * @param int $postId
+     *
+     * @return Response
+     */
+    public function editAction(Request $request, $postId)
+    {
+        $post = $this->postService->findOneById($postId);
+        $form = $this->createPostForm($post);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->postService->save($post);
+        }
+
+        return new Response(
+            $this->view->render(
+                'Admin/Post/edit.html.twig',
+                [
+                    'form' => $form->createView(),
+                    'post' => $post,
+                ]
+            )
+        );
     }
 }

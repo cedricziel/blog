@@ -1,0 +1,29 @@
+{% form_theme form 'bootstrap.html.twig' %}
+
+{% extends 'layout.html.twig' %}
+
+{% block title %}Edit - PostAdmin{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Post {{ post.title }}</h1>
+                {{ form(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="//cdn.ckeditor.com/4.5.8/standard/ckeditor.js"></script>
+
+    <script>
+        CKEDITOR.editorConfig = function( config ) {
+            config.language = 'de';
+        };
+        CKEDITOR.inline('form_body');
+    </script>
+{% endblock %}
