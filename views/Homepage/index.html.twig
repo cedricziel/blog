@@ -3,5 +3,7 @@
 {% block title %}Homepage{% endblock %}
 
 {% block body %}
-
+    {% for post in posts %}
+        {{ post.body|markdown }}
+    {% endfor %}
 {% endblock %}

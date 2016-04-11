@@ -6,6 +6,8 @@ use Braincrafted\Bundle\BootstrapBundle\Twig\BootstrapBadgeExtension;
 use Braincrafted\Bundle\BootstrapBundle\Twig\BootstrapFormExtension;
 use Braincrafted\Bundle\BootstrapBundle\Twig\BootstrapIconExtension;
 use Braincrafted\Bundle\BootstrapBundle\Twig\BootstrapLabelExtension;
+use cebe\markdown\Markdown;
+use cebe\markdown\MarkdownExtra;
 use CedricZiel\Blog\Controller\Admin\PostController as AdminPostController;
 use CedricZiel\Blog\Controller\AdminController;
 use CedricZiel\Blog\Controller\HomepageController;
@@ -103,12 +105,21 @@ class BlogApplicationServiceProvider implements ServiceProviderInterface
         $app['twig'] = $app->share(
             $app->extend(
                 'twig',
-                function ($twig) {
+                function ($twig) use ($app) {
                     /** @var \Twig_Environment $twig */
                     $twig->addExtension(new BootstrapIconExtension('fa'));
                     $twig->addExtension(new BootstrapLabelExtension);
                     $twig->addExtension(new BootstrapBadgeExtension);
                     $twig->addExtension(new BootstrapFormExtension);
+
+                    $twig->addFilter(
+                        'markdown',
+                        new \Twig_SimpleFilter(
+                            'markdown',
+                            [$app['markdown'], 'parse'],
+                            ['is_safe' => ['html']]
+                        )
+                    );
 
                     return $twig;
                 }
@@ -125,6 +136,12 @@ class BlogApplicationServiceProvider implements ServiceProviderInterface
      */
     protected function buildContainer(Application $app)
     {
+        $app['markdown'] = $app->share(
+            function () use ($app) {
+
+                return new MarkdownExtra();
+            }
+        );
         $app['post.service'] = $app->share(
             function () use ($app) {
                 return new PostService($app['store.post']);
