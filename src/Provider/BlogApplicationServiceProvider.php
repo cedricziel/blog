@@ -164,6 +164,7 @@ class BlogApplicationServiceProvider implements ServiceProviderInterface
     {
         $app->post('/admin', 'admin.controller:indexAction')->bind('admin.index');
         $app->get('/admin', 'admin.controller:indexAction')->bind('admin.index');
+        $app->get('/admin/env', 'admin.controller:envAction')->bind('admin.env');
         $app->post('/admin/post', 'admin.post.controller:indexAction')->bind('admin.post.index');
         $app->get('/admin/post', 'admin.post.controller:indexAction')->bind('admin.post.index');
         $app->post('/admin/post/new', 'admin.post.controller:newAction')->bind('admin.post.new');

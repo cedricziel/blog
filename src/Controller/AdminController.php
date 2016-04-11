@@ -29,4 +29,17 @@ class AdminController implements ApplicationAwareInterface, TwigAwareInterface
             $this->view->render('Admin/index.html.twig')
         );
     }
+
+    /**
+     * Return information about the environment
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function envAction(Request $request)
+    {
+
+        return new Response(print_r($_SERVER, true));
+    }
 }
