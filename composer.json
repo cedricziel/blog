@@ -10,7 +10,8 @@
         "symfony/config": "^3.0",
         "symfony/translation": "^3.0",
         "symfony/security-csrf": "^3.0",
-        "braincrafted/bootstrap-bundle": "^2.2"
+        "braincrafted/bootstrap-bundle": "^2.2",
+        "cebe/markdown": "^1.1"
     },
     "license": "MIT",
     "authors": [
