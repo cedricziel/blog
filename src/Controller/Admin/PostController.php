@@ -8,9 +8,10 @@ use CedricZiel\Blog\Service\PostService;
 use CedricZiel\Blog\Traits\ApplicationAwareTrait;
 use CedricZiel\Blog\Traits\TwigAwareTrait;
 use Symfony\Component\Form\CallbackTransformer;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Form;
@@ -105,10 +106,43 @@ class PostController implements ApplicationAwareInterface
         $formBuilder = $formFactory
             ->createBuilder(FormType::class, $post)
             ->add('title')
-            ->add('draft', CheckboxType::class)
-            ->add('created_at', DateTimeType::class)
-            ->add('updated_at', DateTimeType::class)
-            ->add('published_at', DateTimeType::class)
+            ->add(
+                'draft',
+                ChoiceType::class,
+                [
+                    'choices'  => array(
+                        'Yes' => true,
+                        'No' => false,
+                    ),
+                ]
+            )
+            ->add(
+                'created_at',
+                DateType::class,
+                [
+                    'widget' => 'single_text',
+                    'format' => 'yyyy-MM-dd',
+                    'html5' => true,
+                ]
+            )
+            ->add(
+                'updated_at',
+                DateType::class,
+                [
+                    'widget' => 'single_text',
+                    'format' => 'yyyy-MM-dd',
+                    'html5' => true,
+                ]
+            )
+            ->add(
+                'published_at',
+                DateType::class,
+                [
+                    'widget' => 'single_text',
+                    'format' => 'yyyy-MM-dd',
+                    'html5' => true,
+                ]
+            )
             ->add('body', TextareaType::class)
             ->add('submit', SubmitType::class);
 
@@ -167,6 +201,8 @@ class PostController implements ApplicationAwareInterface
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->postService->save($post);
+
+            return new RedirectResponse($this->application->path('admin.post.index'));
         }
 
         return new Response(

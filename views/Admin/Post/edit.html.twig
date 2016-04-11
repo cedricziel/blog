@@ -8,11 +8,33 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1>Post {{ post.title }}</h1>
-                {{ form(form) }}
+                <h1>Edit Post "{{ post.title }}"</h1>
             </div>
         </div>
     </div>
+    {{ form_start(form) }}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                {{ form_errors(form) }}
+                {{ form_row(form._token) }}
+                {{ form_row(form.title) }}
+                {{ form_row(form.body) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_row(form.draft) }}
+                {{ form_row(form.created_at) }}
+                {{ form_row(form.published_at) }}
+                {{ form_row(form.updated_at) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                {{ form_row(form.submit) }}
+            </div>
+        </div>
+    </div>
+    {{ form_start(form) }}
 {% endblock %}
 
 {% block scripts %}
@@ -21,7 +43,7 @@
     <script src="//cdn.ckeditor.com/4.5.8/standard/ckeditor.js"></script>
 
     <script>
-        CKEDITOR.editorConfig = function( config ) {
+        CKEDITOR.editorConfig = function (config) {
             config.language = 'de';
         };
         CKEDITOR.inline('form_body');
