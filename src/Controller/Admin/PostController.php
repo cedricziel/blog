@@ -77,7 +77,8 @@ class PostController extends AbstractController
         return $this->render(
             'Admin/Post/new.html.twig',
             [
-                'postForm' => $postForm->createView(),
+                'form' => $postForm->createView(),
+                'post' => $post,
             ]
         );
     }
@@ -140,6 +141,10 @@ class PostController extends AbstractController
             new CallbackTransformer(
                 function ($originalCreatedAt) {
 
+                    if ($originalCreatedAt instanceof \DateTime) {
+                        return $originalCreatedAt;
+                    }
+
                     return \DateTime::createFromFormat('Y-m-d H:i:s', $originalCreatedAt);
                 },
                 function ($submittedCreatedAt) {
@@ -151,6 +156,10 @@ class PostController extends AbstractController
             new CallbackTransformer(
                 function ($originalCreatedAt) {
 
+                    if ($originalCreatedAt instanceof \DateTime) {
+                        return $originalCreatedAt;
+                    }
+
                     return \DateTime::createFromFormat('Y-m-d H:i:s', $originalCreatedAt);
                 },
                 function ($submittedCreatedAt) {
@@ -161,6 +170,14 @@ class PostController extends AbstractController
         $formBuilder->get('published_at')->addModelTransformer(
             new CallbackTransformer(
                 function ($originalCreatedAt) {
+
+                    if (null === $originalCreatedAt) {
+                        return null;
+                    }
+
+                    if ($originalCreatedAt instanceof \DateTime) {
+                        return $originalCreatedAt;
+                    }
 
                     return \DateTime::createFromFormat('Y-m-d H:i:s', $originalCreatedAt);
                 },
