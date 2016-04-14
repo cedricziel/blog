@@ -47,13 +47,11 @@ class PostController extends AbstractController
     {
         $posts = $this->postService->findLatestPosts();
 
-        return new Response(
-            $this->render(
-                'Admin/Post/index.html.twig',
-                [
-                    'posts' => $posts,
-                ]
-            )
+        return $this->render(
+            'Admin/Post/index.html.twig',
+            [
+                'posts' => $posts,
+            ]
         );
     }
 
@@ -76,13 +74,11 @@ class PostController extends AbstractController
             return new RedirectResponse($this->application->path('admin.post.index'));
         }
 
-        return new Response(
-            $this->render(
-                'Admin/Post/new.html.twig',
-                [
-                    'postForm' => $postForm->createView(),
-                ]
-            )
+        return $this->render(
+            'Admin/Post/new.html.twig',
+            [
+                'postForm' => $postForm->createView(),
+            ]
         );
     }
 
@@ -199,14 +195,12 @@ class PostController extends AbstractController
             return new RedirectResponse($this->application->path('admin.post.index'));
         }
 
-        return new Response(
-            $this->render(
-                'Admin/Post/edit.html.twig',
-                [
-                    'form' => $form->createView(),
-                    'post' => $post,
-                ]
-            )
+        return $this->render(
+            'Admin/Post/edit.html.twig',
+            [
+                'form' => $form->createView(),
+                'post' => $post,
+            ]
         );
     }
 }

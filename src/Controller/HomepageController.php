@@ -32,13 +32,11 @@ class HomepageController extends AbstractController
     {
         $posts = $this->postService->findLatestPosts();
 
-        return new Response(
-            $this->render(
-                'Homepage/index.html.twig',
-                [
-                    'posts' => $posts,
-                ]
-            )
+        return $this->render(
+            'Homepage/index.html.twig',
+            [
+                'posts' => $posts,
+            ]
         );
     }
 }
