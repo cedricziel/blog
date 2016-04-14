@@ -165,7 +165,10 @@ class BlogApplicationServiceProvider implements ServiceProviderInterface
         );
         $app['homepage.controller'] = $app->share(
             function () use ($app) {
-                return new HomepageController($app['post.service']);
+                $controller = new HomepageController($app['post.service']);
+                $controller->setApplication($app);
+
+                return $controller;
             }
         );
     }
