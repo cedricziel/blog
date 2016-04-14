@@ -4,27 +4,22 @@ namespace CedricZiel\Blog\Controller;
 
 use CedricZiel\Blog\Service\PostService;
 use Symfony\Component\HttpFoundation\Response;
-use Twig_Environment;
 
-class HomepageController
+/**
+ * @package CedricZiel\Blog\Controller
+ */
+class HomepageController extends AbstractController
 {
-    /**
-     * @var Twig_Environment
-     */
-    protected $view;
-
     /**
      * @var PostService
      */
     private $postService;
 
     /**
-     * @param Twig_Environment $twig
      * @param PostService $postService
      */
-    public function __construct(Twig_Environment $twig, PostService $postService)
+    public function __construct(PostService $postService)
     {
-        $this->view = $twig;
         $this->postService = $postService;
     }
 
@@ -38,7 +33,7 @@ class HomepageController
         $posts = $this->postService->findLatestPosts();
 
         return new Response(
-            $this->view->render(
+            $this->render(
                 'Homepage/index.html.twig',
                 [
                     'posts' => $posts,

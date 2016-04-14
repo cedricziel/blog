@@ -149,9 +149,8 @@ class BlogApplicationServiceProvider implements ServiceProviderInterface
         );
         $app['admin.controller'] = $app->share(
             function () use ($app) {
-                $controller = new AdminController($app['twig'], $app['post.service']);
+                $controller = new AdminController($app['post.service']);
                 $controller->setApplication($app);
-                $controller->setTwig($app['twig']);
 
                 return $controller;
             }
@@ -160,14 +159,13 @@ class BlogApplicationServiceProvider implements ServiceProviderInterface
             function () use ($app) {
                 $controller = new AdminPostController($app['post.service']);
                 $controller->setApplication($app);
-                $controller->setTwig($app['twig']);
 
                 return $controller;
             }
         );
         $app['homepage.controller'] = $app->share(
             function () use ($app) {
-                return new HomepageController($app['twig'], $app['post.service']);
+                return new HomepageController($app['post.service']);
             }
         );
     }

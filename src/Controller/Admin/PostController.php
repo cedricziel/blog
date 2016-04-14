@@ -2,16 +2,13 @@
 
 namespace CedricZiel\Blog\Controller\Admin;
 
-use CedricZiel\Blog\Api\ApplicationAwareInterface;
+use CedricZiel\Blog\Controller\AbstractController;
 use CedricZiel\Blog\Entity\Post;
 use CedricZiel\Blog\Service\PostService;
-use CedricZiel\Blog\Traits\ApplicationAwareTrait;
-use CedricZiel\Blog\Traits\TwigAwareTrait;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Form;
@@ -26,11 +23,8 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @package CedricZiel\Blog\Controller\Admin
  */
-class PostController implements ApplicationAwareInterface
+class PostController extends AbstractController
 {
-    use ApplicationAwareTrait;
-    use TwigAwareTrait;
-
     /**
      * @var PostService
      */
@@ -54,7 +48,7 @@ class PostController implements ApplicationAwareInterface
         $posts = $this->postService->findLatestPosts();
 
         return new Response(
-            $this->view->render(
+            $this->render(
                 'Admin/Post/index.html.twig',
                 [
                     'posts' => $posts,
@@ -83,7 +77,7 @@ class PostController implements ApplicationAwareInterface
         }
 
         return new Response(
-            $this->view->render(
+            $this->render(
                 'Admin/Post/new.html.twig',
                 [
                     'postForm' => $postForm->createView(),
@@ -110,7 +104,7 @@ class PostController implements ApplicationAwareInterface
                 'draft',
                 ChoiceType::class,
                 [
-                    'choices'  => array(
+                    'choices' => array(
                         'Yes' => true,
                         'No' => false,
                     ),
@@ -206,7 +200,7 @@ class PostController implements ApplicationAwareInterface
         }
 
         return new Response(
-            $this->view->render(
+            $this->render(
                 'Admin/Post/edit.html.twig',
                 [
                     'form' => $form->createView(),
